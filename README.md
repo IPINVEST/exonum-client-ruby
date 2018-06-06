@@ -6,6 +6,32 @@ Light client for Exonum blockchain framework. [Exonum homepage](https://exonum.c
 
 Pre alpha
 
+## Usage
+
+Signing a message:
+
+    # Ed25519 private key in hex
+    secret = '867103771411a6d8e14dd2b037bb5b57ab0add4debdc39147f9d2eae342a388d29823166d18e2471a19b16d261fe329f1228048846c1acea2f370e6a89c7a4d9'
+    # Message params template
+    fields = [
+      { name: 'pub_key', type: Exonum::PublicKeyT.new },
+      { name: 'amount', type: Exonum::UInt64T.new },
+      { name: 'seed', type: Exonum::UInt64T.new }
+    ]
+
+    # Message params values
+    data = {
+      'pub_key' => "29823166d18e2471a19b16d261fe329f1228048846c1acea2f370e6a89c7a4d9",
+      'amount' => 10,
+      'seed' => 4645085842425400387
+    }
+
+    # protocol_version: 0, message_id: 1, service_id: 128 
+    message = Exonum::MessageT.new 0, 1, 128, Exonum::StructT.new(fields)
+
+    # get ed25519 signature in hex
+    message.sign(secret, data)
+
 ## Contributing
 
 1. Fork it
