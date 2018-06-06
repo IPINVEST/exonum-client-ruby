@@ -30,6 +30,7 @@ Signing a message:
     message = Exonum::MessageT.new 0, 1, 128, Exonum::StructT.new(fields)
 
     # get ed25519 signature in hex
+    # 46386a5ef9ad0ac5d1e2fe509e3e3bfa27f4f0d376628169df76b5c02f77f8699ed966031a42bbc1a94002c4ec666f4e7d143a481e19eee306a2dfd8280c3d0e
     message.sign(secret, data)
 
 ## Contributing
