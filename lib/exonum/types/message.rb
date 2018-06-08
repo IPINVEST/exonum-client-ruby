@@ -43,7 +43,7 @@ module Exonum
       raise "Expecting 64 bytes key in hex" unless secret.is_a?(String) and secret.length == 128
       key = Ed25519::SigningKey.new [secret[0..63]].pack 'H*'
       buffer = serialize(data, true).pack('c*')
-      key.sign(buffer).unpack 'H*'
+      key.sign(buffer).unpack('H*').first
     end
   end
 end
