@@ -17,8 +17,8 @@ module Exonum
     
     def serialize data, buffer, from=0, shift=0
       raise "Expecting array" unless data.is_a?(Array)
-      UInt32T.new.serialize buffer.length, buffer, from
-      UInt32T.new.serialize data.length, buffer, from + 4
+      UInt32T.serialize buffer.length, buffer, from
+      UInt32T.serialize data.length, buffer, from + 4
       if value_type.is_a?(StringT)
         start = buffer.length
         (start..(data.length*8-1)).each do |i|
@@ -27,9 +27,9 @@ module Exonum
         (0..(data.length-1)).each do |i|
           index = start + i*8
           finish = buffer.length
-          UInt32T.new.serialize finish - shift, buffer, index
+          UInt32T.serialize finish - shift, buffer, index
           value_type.serialize data[i], buffer, finish
-          UInt32T.new.serialize buffer.length - finish, buffer, index + 4
+          UInt32T.serialize buffer.length - finish, buffer, index + 4
         end
       elsif value_type.is_a?(ArrayT)
         start = buffer.length

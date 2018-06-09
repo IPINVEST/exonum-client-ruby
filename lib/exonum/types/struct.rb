@@ -41,10 +41,10 @@ module Exonum
             localShift += field[:type].size
           else
             bufferLengthOld = buffer.length
-            UInt32T.new.serialize(bufferLengthOld - nestedShift, buffer, localFrom) # index where string content starts in buffer
+            UInt32T.serialize(bufferLengthOld - nestedShift, buffer, localFrom) # index where string content starts in buffer
             field[:type].serialize value, buffer, bufferLengthOld, nestedShift
             bufferLengthNew = buffer.length
-            UInt32T.new.serialize(bufferLengthNew - bufferLengthOld, buffer, localFrom + 4) # string length
+            UInt32T.serialize(bufferLengthNew - bufferLengthOld, buffer, localFrom + 4) # string length
             localShift += 8
           end
         else
