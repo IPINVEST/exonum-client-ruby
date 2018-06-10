@@ -8,30 +8,37 @@ Pre alpha
 
 ## Usage
 
-Signing a message:
+Posting a transaction:
 
-    # Ed25519 private key in hex
-    secret = '867103771411a6d8e14dd2b037bb5b57ab0add4debdc39147f9d2eae342a388d29823166d18e2471a19b16d261fe329f1228048846c1acea2f370e6a89c7a4d9'
-    # Message params template
-    fields = [
-      { name: 'pub_key', type: Exonum::PublicKeyT.new },
-      { name: 'amount', type: Exonum::UInt64T.new },
-      { name: 'seed', type: Exonum::UInt64T.new }
-    ]
+    require 'exonum'
+    require 'rest_client'
 
-    # Message params values
+    keypair = Exonum::Random.generate_keypair
+
+    message = Exonum::MessageT.new 0, 2, 128, Exonum::StructT.new([
+      { name: 'pub_key', type: Exonum::PublicKeyT },
+      { name: 'name', type: Exonum::StringT }
+    ])
+
     data = {
-      'pub_key' => "29823166d18e2471a19b16d261fe329f1228048846c1acea2f370e6a89c7a4d9",
-      'amount' => 10,
-      'seed' => 4645085842425400387
+      pub_key: keypair[:public],
+      name: 'John Doe'
     }
 
-    # protocol_version: 0, message_id: 1, service_id: 128 
-    message = Exonum::MessageT.new 0, 1, 128, Exonum::StructT.new(fields)
+    signature = message.sign "#{keypair[:private]}#{keypair[:public]}", data
 
-    # get ed25519 signature in hex
-    # 46386a5ef9ad0ac5d1e2fe509e3e3bfa27f4f0d376628169df76b5c02f77f8699ed966031a42bbc1a94002c4ec666f4e7d143a481e19eee306a2dfd8280c3d0e
-    message.sign(secret, data)
+    JSON.parse RestClient.post(
+      'http://127.0.0.1:8200/api/services/cryptocurrency/v1/wallets/transaction', 
+      {
+        protocol_version: 0,
+        message_id: 2,
+        service_id: 128,
+        signature: signature,
+        body: data
+      }.to_json,
+      {content_type: :json, accept: :json}
+    )
+
 
 ## Contributing
 
