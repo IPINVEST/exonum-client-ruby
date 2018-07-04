@@ -32,7 +32,7 @@ module Exonum
       localShift = 0
       fields.each do |field|
         value = data.with_indifferent_access[field[:name]]
-        raise "Field #{field[:name]} is not defined" unless value.present?
+        raise "Field #{field[:name]} is not defined" if value.nil?
         localFrom = from + localShift
         nestedShift = isTransactionBody ? 0 : shift
         if field[:type].is_a?(StructT)
