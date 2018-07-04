@@ -1,7 +1,7 @@
 module Exonum
   module Random
     def self.generate_seed
-      SecureRandom.random_bytes(16).unpack('Q<').first
+      SecureRandom.random_bytes(16).unpack('Q<').first.to_s
     end
 
     def self.generate_keypair
