@@ -130,7 +130,7 @@ module Exonum
     end
 
     def self.serialize value, buffer, from, shift=0
-      [value].pack('q<').bytes.each do |byte|
+      [value.to_s].pack('q<').bytes.each do |byte|
         buffer[from] = byte
         from += 1
       end
@@ -147,7 +147,7 @@ module Exonum
     end
 
     def self.serialize value, buffer, from, shift=0
-      [value].pack('Q<').bytes.each do |byte|
+      [value.to_s].pack('Q<').bytes.each do |byte|
         buffer[from] = byte
         from += 1
       end
