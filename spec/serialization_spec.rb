@@ -40,7 +40,7 @@ RSpec.describe 'serialization' do
   end
 
   it "can generate seed" do
-    expect(Exonum::Random.generate_seed.is_a? Integer).to be true
+    expect(Exonum::Random.generate_seed.is_a? String).to be true
   end
 
   it "can generate keypair" do

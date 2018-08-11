@@ -11,6 +11,7 @@ module Exonum
   MAX_UINT16 = 65535
   MAX_UINT32 = 4294967295
   MAX_UINT64 = 18446744073709551615
+  FLOAT_PRECISION_MULTIPLIER = 10.0 ** 6
 
   class Int8T
     def self.size
@@ -164,6 +165,7 @@ module Exonum
     end
 
     def self.serialize value, buffer, from, shift=0
+      value = (value * FLOAT_PRECISION_MULTIPLIER).round / FLOAT_PRECISION_MULTIPLIER
       [value].pack('e').bytes.each do |byte|
         buffer[from] = byte
         from += 1
@@ -181,6 +183,7 @@ module Exonum
     end
 
     def self.serialize value, buffer, from, shift=0
+      value = (value * FLOAT_PRECISION_MULTIPLIER).round / FLOAT_PRECISION_MULTIPLIER
       [value].pack('E').bytes.each do |byte|
         buffer[from] = byte
         from += 1
